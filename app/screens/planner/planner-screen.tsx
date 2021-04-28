@@ -43,6 +43,14 @@ const SETTINGS_ICON: ImageStyle = {
   opacity: 0.7,
 }
 
+const INBOX_ICON: ImageStyle = {
+  width: headerIconSize - 1,
+  height: headerIconSize - 5,
+  marginStart: spacing[3],
+  tintColor: color.primary,
+  opacity: 0.7,
+}
+
 const CHANGE_DIRECTION_WRAPPER: ViewStyle = {
   width: 65,
   height: 65,
@@ -152,6 +160,13 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
       <View style={CONTENT_WRAPPER}>
         <View style={HEADER_WRAPPER}>
           <TouchableOpacity onPress={() => navigation.navigate("settingsStack")} activeOpacity={0.8} accessibilityLabel="הגדרות">
+            <Image source={require("../../../assets/inbox.png")} style={INBOX_ICON} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("settingsStack")}
+            activeOpacity={0.8}
+            accessibilityLabel="עדכוני מרכבת ישראל"
+          >
             <Image source={require("../../../assets/settings.png")} style={SETTINGS_ICON} />
           </TouchableOpacity>
         </View>
