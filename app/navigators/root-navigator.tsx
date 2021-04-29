@@ -4,8 +4,9 @@ import { NavigationContainer, NavigationContainerRef, DefaultTheme, DarkTheme } 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { MainNavigator } from "./main-navigator"
 import { SettingsNavigator } from "./settings/settings-navigator"
+import { AnnouncementsNavigatior } from "./announcements/announcements-navigator"
 
-export type RootParamList = { mainStack: undefined; secondaryStack: undefined; settingsStack: undefined }
+export type RootParamList = { mainStack: undefined; settingsStack: undefined; announcementsStack: undefined }
 
 const Stack = createNativeStackNavigator<RootParamList>()
 
@@ -19,6 +20,7 @@ const RootStack = () => {
     >
       <Stack.Screen name="mainStack" component={MainNavigator} />
       <Stack.Screen name="settingsStack" component={SettingsNavigator} />
+      <Stack.Screen name="announcementsStack" component={AnnouncementsNavigatior} />
     </Stack.Navigator>
   )
 }
