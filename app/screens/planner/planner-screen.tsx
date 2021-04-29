@@ -44,8 +44,9 @@ const SETTINGS_ICON: ImageStyle = {
 }
 
 const INBOX_ICON: ImageStyle = {
-  width: headerIconSize - 1,
-  height: headerIconSize - 5,
+  width: headerIconSize - 6.5,
+  height: headerIconSize + 1,
+  marginTop: 0.5,
   marginStart: spacing[3],
   tintColor: color.primary,
   opacity: 0.7,
@@ -160,7 +161,7 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
       <View style={CONTENT_WRAPPER}>
         <View style={HEADER_WRAPPER}>
           <TouchableOpacity onPress={() => navigation.navigate("settingsStack")} activeOpacity={0.8} accessibilityLabel="הגדרות">
-            <Image source={require("../../../assets/inbox.png")} style={INBOX_ICON} />
+            <Image source={require("../../../assets/tram.png")} style={INBOX_ICON} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("settingsStack")}
