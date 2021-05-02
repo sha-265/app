@@ -10,9 +10,11 @@ import {
   Platform,
 } from "react-native"
 import { Text } from "../../../components"
+import { isRTL } from "../../../i18n"
 import { color, spacing } from "../../../theme"
 
 const chevronIcon = require("../../../../assets/chevron.png")
+const checkmarkIcon = require("../../../../assets/checkmark.png")
 const externalLinkIcon = require("../../../../assets/external-link.png")
 
 const SETTINGS_BOX_BASE: ViewStyle = {
@@ -35,6 +37,13 @@ const SETTINGS_BOX_DETAILS: ViewStyle = {
 
 const SETTINGS_BOX_TITLE: TextStyle = { marginStart: spacing[2], fontSize: 16.5, fontWeight: "400" }
 
+const CHECKMARK_ICON: ImageStyle = {
+  width: 19.5,
+  height: 19.5,
+  marginEnd: spacing[1],
+  tintColor: color.primary,
+}
+
 const EXTERNAL_LINK_ICON: ImageStyle = {
   width: 19.5,
   height: 19.5,
@@ -49,22 +58,24 @@ const CHEVRON_ICON: ImageStyle = {
   marginEnd: spacing[2],
   tintColor: color.dim,
   opacity: 0.6,
+  transform: isRTL ? undefined : [{ rotate: "180deg" }],
 }
 
 export interface SettingBoxProps extends TouchableHighlightProps {
   title: string
-  icon: string
+  icon?: string
   first?: boolean
   last?: boolean
+  checkmark?: boolean
   chevron?: boolean
   externalLink?: boolean
 }
 
 export const SettingBox = function SettingBox(props: SettingBoxProps) {
-  const { title, icon, first, last, externalLink, chevron, onPress, style } = props
+  const { title, icon, first, last, externalLink, chevron, checkmark, onPress, style } = props
   let boxStyle: ViewStyle = {}
 
-  if (!first) boxStyle = { borderTopColor: Platform.select({ android: "#f2f2f7", ios: color.background }), borderTopWidth: 1 }
+  if (!first) boxStyle = { borderTopColor: Platform.select({ android: "transparent", ios: color.background }), borderTopWidth: 1 }
 
   if (first) {
     boxStyle = { borderTopLeftRadius: 10, borderTopRightRadius: 10, ...boxStyle }
@@ -88,6 +99,7 @@ export const SettingBox = function SettingBox(props: SettingBoxProps) {
 
         {externalLink && <Image style={EXTERNAL_LINK_ICON} source={externalLinkIcon} />}
         {chevron && <Image style={CHEVRON_ICON} source={chevronIcon} />}
+        {checkmark && <Image style={CHECKMARK_ICON} source={checkmarkIcon} />}
       </View>
     </TouchableHighlight>
   )

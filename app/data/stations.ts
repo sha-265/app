@@ -1,8 +1,11 @@
+import { useState, useEffect, useMemo } from "react"
+import * as storage from "../utils/storage"
+
 const stations = [
   {
     id: "3700",
     hebrew: "תל אביב - סבידור מרכז",
-    english: "Tel Aviv-Savidor Center",
+    english: "Tel Aviv - Savidor Center",
     russian: "Тель-Авив - Мерказ - Центральная",
     arabic: "تل ابيب – ساڤيدور المركز",
     image: require("../../assets/station-images/tlv-center.jpeg"),
@@ -10,7 +13,7 @@ const stations = [
   {
     id: "3500",
     hebrew: "הרצליה",
-    english: "Hertsliya",
+    english: "Herzliya",
     russian: "Герцлия",
     arabic: "هرتسليا",
     image: require("../../assets/station-images/herzeliya.jpeg"),
@@ -102,15 +105,15 @@ const stations = [
   {
     id: "2300",
     hebrew: "חיפה - חוף הכרמל",
-    english: "Haifa-Hof HaKarmel",
-    russian: "Хайфа Хоф ха-Кармель",
+    english: "Haifa - Hof HaKarmel",
+    russian: "Хайфа Хоф ха - Кармель",
     arabic: "حيفا - شاطئ الكرمل",
   },
   {
     id: "8700",
     hebrew: "כפר סבא - נורדאו",
-    english: "Kfar Sava-Nordau (A.Kostyuk)",
-    russian: "Кфар-Саба – Нордау (А. Костюк)",
+    english: "Kfar Sava - Nordau",
+    russian: "Кфар-Саба – Нордау",
     arabic: "كفار سابا - نورداو",
     image: require("../../assets/station-images/kfar-saba.jpeg"),
   },
@@ -124,7 +127,7 @@ const stations = [
   {
     id: "6500",
     hebrew: "ירושלים - גן החיות התנכי",
-    english: "Jerussianalem-Biblical Zoo",
+    english: "Jerusalem - Biblical Zoo",
     russian: "Иерусалим – зоопарк",
     arabic: "القدس - حديقة الحيوان التوراتية",
   },
@@ -168,15 +171,15 @@ const stations = [
   {
     id: "4600",
     hebrew: "תל אביב - השלום",
-    english: "Tel Aviv-HaShalom",
+    english: "Tel Aviv - HaShalom",
     russian: "Тель-Авив - ха-Шалом",
     arabic: "تل أبيب - السلام",
     image: require("../../assets/station-images/tlv-hashalom.jpeg"),
   },
   {
     id: "2100",
-    hebrew: "חיפה- מרכז השמונה",
-    english: "Haifa Center-HaShmona",
+    hebrew: "חיפה - מרכז השמונה",
+    english: "Haifa Center - HaShmona",
     russian: "Хайфа - Мерказ - Центральная",
     arabic: "حيفا المركز - هشمونا",
   },
@@ -190,8 +193,8 @@ const stations = [
   {
     id: "8800",
     hebrew: "ראש העין - צפון",
-    english: "Rosh Ha'Ayin-North",
-    russian: "Рош ха-Айн Цафон",
+    english: "Rosh Ha'Ayin - North",
+    russian: "Рош ха - Айн Цафон",
     arabic: "روش هعاين - شمال",
     image: require("../../assets/station-images/rosh-haayin.jpeg"),
   },
@@ -205,9 +208,9 @@ const stations = [
   },
   {
     id: "5200",
-    hebrew: "רחובות (א' הדר) ",
-    english: "Rehovot (E. Hadar)",
-    russian: "Реховот- им. А. Хадара",
+    hebrew: "רחובות",
+    english: "Rehovot",
+    russian: "Реховот",
     arabic: "رحوڤوت",
   },
   {
@@ -220,22 +223,22 @@ const stations = [
   {
     id: "9100",
     hebrew: "ראשון לציון - הראשונים",
-    english: "Rishon LeTsiyon-HaRishonim",
+    english: "Rishon LeTsiyon - HaRishonim",
     russian: "Ришон ле-Цион - Ха-Ришоним ",
     arabic: "ريشون لتسيون - هريشونيم",
   },
   {
     id: "5800",
-    hebrew: "אשדוד עד הלום (מ' בר כוכבא)",
-    english: "Ashdod-Ad Halom (M.Bar Kochva)",
-    russian: "Ашдод-ад-Халом (М. Бар Кохва)",
+    hebrew: "אשדוד עד הלום",
+    english: "Ashdod - Ad Halom",
+    russian: "Ашдод - ад-Халом",
     arabic: "أشدود - عاد هلوم",
     image: require("../../assets/station-images/ashdod.jpg"),
   },
   {
     id: "4250",
     hebrew: "פתח תקווה - סגולה",
-    english: "Petah Tikva-Segula",
+    english: "Petah Tikva - Segula",
     russian: "Петах-Тиква - Сгула",
     arabic: "بيتح تكڤا - سچوله",
   },
@@ -250,7 +253,7 @@ const stations = [
   {
     id: "3600",
     hebrew: "תל אביב - אוניברסיטה",
-    english: "Tel Aviv-University",
+    english: "Tel Aviv - University",
     russian: "Тель-Авив - Университет",
     arabic: "تل أبيب - الجامعة",
     image: require("../../assets/station-images/tlv-university.jpg"),
@@ -258,8 +261,8 @@ const stations = [
   {
     id: "7320",
     hebrew: "באר שבע - מרכז",
-    english: "Be'er Sheva-Center",
-    russian: "Беер-Шева Мерказ",
+    english: "Be'er Sheva - Center",
+    russian: "Беер - Шева Мерказ",
     arabic: "بئر السبع - المركز",
     image: require("../../assets/station-images/beer-sheva-center.jpg"),
   },
@@ -273,7 +276,7 @@ const stations = [
   {
     id: "4900",
     hebrew: "תל אביב - ההגנה",
-    english: "Tel Aviv-HaHagana",
+    english: "Tel Aviv - HaHagana",
     russian: "Тель-Авив - ха-Хагана ",
     arabic: "تل أبيب - ههچناه",
     image: require("../../assets/station-images/tlv-hagana.jpeg"),
@@ -288,7 +291,7 @@ const stations = [
   {
     id: "6700",
     hebrew: "ירושלים - מלחה",
-    english: "Jerussianalem-Malha",
+    english: "Jerusalem - Malha",
     russian: "Иерусалим - Малха",
     arabic: "القدس - المالحه",
     image: require("../../assets/malha.jpg"),
@@ -310,7 +313,7 @@ const stations = [
   {
     id: "9200",
     hebrew: "הוד השרון - סוקולוב",
-    english: "Hod HaSharon-Sokolov",
+    english: "Hod HaSharon - Sokolov",
     russian: "Ход Хашарон - Соколов",
     arabic: "هود هشارون - سوكولوڤ",
     image: require("../../assets/station-images/hod_hasharon_sokolov.jpg"),
@@ -318,21 +321,21 @@ const stations = [
   {
     id: "4170",
     hebrew: "פתח תקווה  - קריית אריה",
-    english: "Petah Tikva-Kiryat Arye",
+    english: "Petah Tikva - Kiryat Arye",
     russian: "Петах Тиква – Кирьят Арье",
     arabic: "بيتح تكڤا - كريات أريه",
   },
   {
     id: "5150",
     hebrew: "לוד גני אביב",
-    english: "Lod-Gane Aviv",
+    english: "Lod - Gane Aviv",
     russian: "Лод - Ганей Авив",
     arabic: "اللد - چاني أڤيڤ",
   },
   {
     id: "8550",
     hebrew: "להבים - רהט",
-    english: "Lehavim-Rahat",
+    english: "Lehavim - Rahat",
     russian: "Леавим - Рахат",
     arabic: "لهاڤيم - رهط",
   },
@@ -346,7 +349,7 @@ const stations = [
   {
     id: "400",
     hebrew: "מודיעין - מרכז",
-    english: "Modi'in-Center",
+    english: "Modi'in - Center",
     russian: "Модиин центр ",
     arabic: "موديعين - المركز",
   },
@@ -360,35 +363,35 @@ const stations = [
   {
     id: "4660",
     hebrew: "חולון - וולפסון",
-    english: "Holon-Wolfson",
+    english: "Holon - Wolfson",
     russian: "Холон - Вольфсон",
     arabic: "حولون - ڤولفسون",
   },
   {
     id: "4680",
     hebrew: "בת ים - יוספטל",
-    english: "Bat Yam-Yoseftal",
+    english: "Bat Yam - Yoseftal",
     russian: "Бат Ям - Йосеф Таль",
     arabic: "بات يام - يوسفطال",
   },
   {
     id: "4690",
     hebrew: "בת ים - קוממיות",
-    english: "Bat Yam-Komemiyut",
+    english: "Bat Yam - Komemiyut",
     russian: "Бат Ям - Комемуют",
     arabic: "بات يام - كوميميوت",
   },
   {
     id: "9800",
-    hebrew: "ראשון לציון-משה דיין",
-    english: "Rishon LeTsiyon-Moshe Dayan",
+    hebrew: "ראשון לציון - משה דיין",
+    english: "Rishon LeTsiyon - Moshe Dayan",
     russian: "Ришон-Ле-Цион станция им. Моше Даяна",
     arabic: "ريشون لتسيون -موشي ديان",
   },
   {
     id: "9000",
     hebrew: "יבנה מערב",
-    english: "Yavne-West",
+    english: "Yavne - West",
     russian: "Явне-Запад",
     arabic: "ياڤني - غرب",
   },
@@ -417,7 +420,7 @@ const stations = [
   {
     id: "3310",
     hebrew: "נתניה - ספיר",
-    english: "Netanya-Sapir",
+    english: "Netanya - Sapir",
     russian: "Нетания – Сапир",
     arabic: "نتانيا - سبير",
     image: require("../../assets/station-images/netanya-sapir.jpeg"),
@@ -425,21 +428,21 @@ const stations = [
   {
     id: "1240",
     hebrew: "יקנעם - כפר יהושע",
-    english: "Yokne'am-Kfar Yehoshu'a",
+    english: "Yokne'am - Kfar Yehoshu'a",
     russian: "Йокнеам – Кфар-Иегошуа",
     arabic: "يوكنعام – كفار يهوشوع",
   },
   {
     id: "1250",
     hebrew: "מגדל העמק - כפר ברוך",
-    english: "Migdal Ha'emek-Kfar Barukh",
+    english: "Migdal Ha'emek - Kfar Barukh",
     russian: "Мигдаль-Ха-Эмек – Кфар Барух",
     arabic: "مجدال هعيمك – كفار باروخ",
     image: require("../../assets/station-images/migdal-haeemek.jpg"),
   },
   {
     id: "1260",
-    hebrew: "עפולה ר.איתן",
+    hebrew: "עפולה ר. איתן",
     english: "Afula R.Eitan",
     russian: "Афула Р. Эйтан",
     arabic: "العفولة  ر. ايتان",
@@ -493,7 +496,7 @@ const stations = [
   {
     id: "680",
     hebrew: "ירושלים - יצחק נבון",
-    english: "Jerussianalem - Yitzhak Navon",
+    english: "Jerusalem - Yitzhak Navon",
     russian: "Иерусалим - Ицхак Навон",
     arabic: "أورشليم – يتسحاق ناڤون",
     image: require("../../assets/station-images/jerusalem-itzhak-navon.jpg"),
@@ -508,11 +511,8 @@ const stations = [
   },
 ]
 
-// We  only  support hebrew at the moment.
-const USER_LANGUAGE = "hebrew"
-const normalizeStationNames = stations
-  .map((station) => ({ id: station.id, name: station[USER_LANGUAGE], image: station.image }))
-  .sort((a, b) => a.name > b.name)
+let normalizeStationNames = []
+
 export default normalizeStationNames
 
 type StationsObjectType = {
@@ -526,8 +526,31 @@ type StationsObjectType = {
   }
 }
 
+export let stationLocale = "hebrew"
+
 export const stationsObject: StationsObjectType = {}
 
 stations.forEach((station) => {
   stationsObject[station.id] = station
 })
+
+export const useStations = () => {
+  const [locale, setLocale] = useState("hebrew")
+
+  useEffect(() => {
+    storage.load("appLanguage").then((languageCode) => {
+      if (languageCode === "en") {
+        stationLocale = "english"
+        setLocale("english")
+      }
+    })
+  }, [])
+
+  const normalizeStationNames = useMemo(() => {
+    return stations
+      .map((station) => ({ id: station.id, name: station[locale], image: station.image }))
+      .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase())
+  }, [locale])
+
+  return normalizeStationNames
+}

@@ -1,19 +1,22 @@
 import React, { useRef, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Image, View, TouchableOpacity, Animated, PixelRatio, ViewStyle, ImageStyle, Easing } from "react-native"
+import { Image, View, TouchableOpacity, Animated, PixelRatio, ViewStyle, ImageStyle, Appearance, Dimensions } from "react-native"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import { Screen, Button, Text, StationCard, DummyInput, ChangeDirectionButton } from "../../components"
 import { useStores } from "../../models"
-import { color, spacing } from "../../theme"
+import { color, primaryFontIOS, spacing } from "../../theme"
 import { PlannerScreenProps } from "../../navigators/main-navigator"
-import stations from "../../data/stations"
+import { useStations } from "../../data/stations"
 import { formatRelative, differenceInMinutes } from "date-fns"
 import HapticFeedback from "react-native-haptic-feedback"
-import { he } from "date-fns/locale"
+import { dateFnsLocalization, dateLocale, translate } from "../../i18n"
 
 const now = new Date()
 const fontScale = PixelRatio.getFontScale()
 const changeIcon = require("../../../assets/up-down-arrow.png")
+const isDarkMode = Appearance.getColorScheme() === "dark"
+
+const { height: deviceHeight } = Dimensions.get("screen")
 
 // #region styles
 const ROOT: ViewStyle = {
@@ -52,11 +55,15 @@ const INBOX_ICON: ImageStyle = {
   opacity: 0.7,
 }
 
+const HEADER_TITLE: TextStyle = {
+  marginBottom: primaryFontIOS === "System" ? 6 : 3,
+}
+
 const CHANGE_DIRECTION_WRAPPER: ViewStyle = {
   width: 65,
   height: 65,
-  top: -30,
-  end: 10,
+  top: deviceHeight > 730 ? -30 : -25,
+  end: deviceHeight > 730 ? 10 : 5,
   alignSelf: "flex-end",
   marginBottom: -60,
   zIndex: 10,
@@ -84,6 +91,8 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const stationCardScale = useRef(new Animated.Value(1)).current
 
+  const stations = useStations()
+
   // The datetimepicker  docs says the first argument is an event, but we get a date instead
   // https://github.com/react-native-datetimepicker/datetimepicker#onchange-optional
   const onDateChange = (date: Date) => {
@@ -99,8 +108,8 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
 
   const formattedDate = React.useMemo(() => {
     if (routePlan.date) {
-      if (differenceInMinutes(routePlan.date, now) === 0) return "עכשיו"
-      return formatRelative(routePlan.date, now, { locale: he })
+      if (differenceInMinutes(routePlan.date, now) === 0) return translate("plan.now")
+      return formatRelative(routePlan.date, now, { locale: dateFnsLocalization })
     }
   }, [routePlan.date])
 
@@ -109,23 +118,43 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
     let origin = routePlan.origin
 
     if (origin) {
-      const originImage = stations.find((s) => s.id === origin.id).image
+      const originStation = stations.find((s) => s.id === origin.id)
+      const originImage = originStation.image
+
+      // It's important to check if the station title doesn't match the MST snapshot title, because when the user
+      // changes their language the station snapshot's title remains with the previous locale.
+      const originName = originStation.name
+
+      if (originName !== origin.name) {
+        // The user probably changed the app language - update the saved station snapshot.
+        routePlan.setOrigin({ id: originStation.id, name: originName })
+      }
+
       origin = Object.assign(origin, { image: originImage })
     }
 
     return origin
-  }, [routePlan.origin?.name])
+  }, [routePlan.origin?.name, stations])
 
   const destinationData = React.useMemo(() => {
     let destination = routePlan.destination
 
     if (destination) {
-      const destinationImage = stations.find((s) => s.id === destination.id).image
+      const destinationStation = stations.find((s) => s.id === destination.id)
+
+      const destinationImage = destinationStation.image
+      const destinationName = destinationStation.name
+
+      if (destinationName !== destination.name) {
+        // The user probably changed the app language - update the saved station snapshot.
+        routePlan.setDestination({ id: destinationStation.id, name: destinationName })
+      }
+
       destination = Object.assign(destination, { image: destinationImage })
     }
 
     return destination
-  }, [routePlan.destination?.name])
+  }, [routePlan.destination?.name, stations])
 
   const onSwitchPress = () => {
     Animated.sequence([
@@ -157,7 +186,7 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
   }
 
   return (
-    <Screen style={ROOT} preset="scroll" statusBarBackgroundColor={color.dim}>
+    <Screen style={ROOT} preset="scroll" statusBarBackgroundColor={isDarkMode ? "#1c1c1e" : color.dim}>
       <View style={CONTENT_WRAPPER}>
         <View style={HEADER_WRAPPER}>
           <TouchableOpacity onPress={() => navigation.navigate("settingsStack")} activeOpacity={0.8} accessibilityLabel="הגדרות">
@@ -172,9 +201,9 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
           </TouchableOpacity>
         </View>
 
-        <Text preset="header" text="תכנון מסלול" style={{ marginBottom: 6 }} />
+        <Text preset="header" tx="plan.title" style={HEADER_TITLE} />
 
-        <Text preset="fieldLabel" text="תחנת מוצא" style={{ marginBottom: spacing[1] }} />
+        <Text preset="fieldLabel" tx="plan.origin" text="תחנת מוצא" style={{ marginBottom: spacing[1] }} />
         <Animated.View style={{ transform: [{ scale: stationCardScale }] }}>
           <StationCard
             name={originData?.name}
@@ -188,7 +217,7 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
           <ChangeDirectionButton onPress={onSwitchPress} />
         </View>
 
-        <Text preset="fieldLabel" text="תחנת יעד" style={{ marginBottom: spacing[1] }} />
+        <Text preset="fieldLabel" tx="plan.destination" style={{ marginBottom: spacing[1] }} />
         <Animated.View style={{ transform: [{ scale: stationCardScale }] }}>
           <StationCard
             name={destinationData?.name}
@@ -211,13 +240,13 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
         </TouchableOpacity>
 
         <DummyInput
-          placeholder="עכשיו"
+          placeholder={translate("plan.now")}
           value={formattedDate}
           style={{ marginBottom: spacing[5] }}
           onPress={() => setDatePickerVisibility(true)}
         />
         <Button
-          title="חישוב מסלול"
+          title={translate("plan.find")}
           onPress={onGetRoutePress}
           disabled={!routePlan.origin || !routePlan.destination || routePlan.origin.id === routePlan.destination.id}
         />
@@ -228,12 +257,12 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
           onChange={onDateChange}
           onConfirm={handleConfirm}
           onCancel={() => setDatePickerVisibility(false)}
-          locale={"he_IL"}
+          locale={dateLocale}
           minimumDate={now}
           minuteInterval={15}
           customHeaderIOS={() => null}
           customCancelButtonIOS={() => null}
-          confirmTextIOS="אישור"
+          confirmTextIOS={translate("common.ok")}
         />
       </View>
     </Screen>

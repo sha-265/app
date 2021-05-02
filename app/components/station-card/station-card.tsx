@@ -13,10 +13,14 @@ const { height: deviceHeight } = Dimensions.get("screen")
 let cardHeight = 120
 
 if (deviceHeight > 600) {
+  cardHeight = 135
+}
+
+if (deviceHeight > 730) {
   cardHeight = 157.5
 }
 
-if (deviceHeight > 850) {
+if (deviceHeight > 780) {
   cardHeight = 177.5
 }
 
@@ -57,7 +61,7 @@ const TEXT: TextStyle = {
 }
 
 const EMPTY_CARD_TEXT: TextStyle = {
-  color: color.text,
+  color: color.dim,
 }
 
 const GARDIENT: ViewStyle = {
@@ -99,7 +103,7 @@ export const StationCard = observer(function StationCard(props: StationCardProps
             source={require("../../../assets/railway-station.png")}
             style={{ width: 48, height: 48, marginBottom: spacing[2], tintColor: color.dim }}
           />
-          <Text style={EMPTY_CARD_TEXT}>בחירת תחנה</Text>
+          <Text style={EMPTY_CARD_TEXT} tx="plan.selectStation" />
         </View>
       </TouchableScale>
     )
