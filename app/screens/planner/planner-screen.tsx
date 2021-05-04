@@ -189,7 +189,11 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
     <Screen style={ROOT} preset="scroll" statusBarBackgroundColor={isDarkMode ? "#1c1c1e" : color.dim}>
       <View style={CONTENT_WRAPPER}>
         <View style={HEADER_WRAPPER}>
-          <TouchableOpacity onPress={() => navigation.navigate("settingsStack")} activeOpacity={0.8} accessibilityLabel="הגדרות">
+          <TouchableOpacity
+            onPress={() => navigation.navigate("announcementsStack")}
+            activeOpacity={0.8}
+            accessibilityLabel="הגדרות"
+          >
             <Image source={require("../../../assets/tram.png")} style={INBOX_ICON} />
           </TouchableOpacity>
           <TouchableOpacity

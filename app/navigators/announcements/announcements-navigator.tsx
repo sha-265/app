@@ -1,8 +1,8 @@
 import React from "react"
 import { TouchableOpacity, Image, Platform } from "react-native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { SettingsScreen } from "../../screens"
 import { color, typography } from "../../theme"
+import { AnnouncementsScreen } from "../../screens/announcements/announcements-screen"
 
 export type SettingsParamList = {
   announcments: undefined
@@ -22,7 +22,7 @@ export const AnnouncementsNavigatior = () => (
   >
     <AnnouncmentsStack.Screen
       name="announcments"
-      component={SettingsScreen}
+      component={AnnouncementsScreen}
       options={({ navigation }) => ({
         title: "עדכוני רכבת ישראל",
         headerTitleStyle: Platform.select({

@@ -7,11 +7,11 @@ import { Screen, Text } from "../../components"
 import { color } from "../../theme"
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
+  backgroundColor: color.background,
   flex: 1,
 }
 
-export const <%= props.pascalCaseName %>Screen = observer(function <%= props.pascalCaseName %>Screen() {
+export const AnnouncementsScreen = observer(function AnnouncementsScreen() {
   // Pull in one of our MST stores
   // const { someStore, anotherStore } = useStores()
 
@@ -19,7 +19,7 @@ export const <%= props.pascalCaseName %>Screen = observer(function <%= props.pas
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-      <Text preset="header" text="<%= props.camelName %>" />
+      <Text preset="header" text="" />
     </Screen>
   )
 })
