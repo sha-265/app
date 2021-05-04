@@ -2,7 +2,7 @@
   "common": {
     "cancel": "ביטול",
     "ok": "אישור",
-    "relax": "להרגע בבקשה"
+    "relax": "אנא, אל תשכחו לנשום"
   },
   "plan": {
     "title": "תכנון מסלול",
@@ -38,7 +38,9 @@
     "title": "הגדרות",
     "language": "שפה",
     "share": "שתפו את Better Rail",
-    "rate": "דרגו ב- App Store",
+    "shareMessage": "האלטרנטיבה לאפליקציית רכבת ישראל",
+    "rateIOS": "דרגו ב- App Store",
+    "rateAndroid": "דרגו ב- Play Store",
     "imageAttribution": "קרדיט תמונות",
     "privacyPolicy": "מדיניות פרטיות",
     "feedback": "שליחת פידבק",
