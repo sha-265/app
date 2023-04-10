@@ -811,8 +811,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellPath = /bin/zsh;
+			shellScript = "# Fix for machines using nvm\nif [[ -s \"$HOME/.nvm/nvm.sh\" ]]; then\n. \"$HOME/.nvm/nvm.sh\"\nelif [[ -x \"$(command -v brew)\" && -s \"$(brew --prefix nvm)/nvm.sh\" ]]; then\n. \"$(brew --prefix nvm)/nvm.sh\"\nfi\n\n\nNODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		15C04EB5D3B55BDD1DE4ACC0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1157,9 +1157,10 @@
 				DEVELOPMENT_TEAM = UE6BVYPPFX;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BetterRail/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Better Rail";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1187,9 +1188,10 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = UE6BVYPPFX;
 				INFOPLIST_FILE = BetterRail/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Better Rail";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1339,7 +1341,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = WatchBetterRail_Extension;
 				INFOPLIST_FILE = WatchBetterRail/Info.plist;
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.watchkitapp";
@@ -1376,7 +1378,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				IBSC_MODULE = WatchBetterRail_Extension;
 				INFOPLIST_FILE = WatchBetterRail/Info.plist;
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.watchkitapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1408,7 +1410,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "WatchBetterRail Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.watchkitapp.watchkitextension";
@@ -1443,7 +1445,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "WatchBetterRail Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.watchkitapp.watchkitextension";
 				PRODUCT_NAME = "${TARGET_NAME}";
@@ -1476,7 +1478,7 @@
 				INFOPLIST_FILE = BetterRailWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.BetterRailWidget";
@@ -1511,7 +1513,7 @@
 				INFOPLIST_FILE = BetterRailWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.BetterRailWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1541,7 +1543,7 @@
 				INFOPLIST_FILE = StationIntent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.StationIntent";
@@ -1575,7 +1577,7 @@
 				INFOPLIST_FILE = StationIntent/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.10.1;
+				MARKETING_VERSION = 1.11.0;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "il.co.better-rail.StationIntent";
 				PRODUCT_NAME = "$(TARGET_NAME)";
