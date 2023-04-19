@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Better Rail",
+    "slug": "better-rail",
+    "extra": {
+      "eas": {
+        "projectId": "b7819f45-8466-4c11-8628-3539099e6c78"
+      }
+    },
+    "owner": "better-rail"
+  }
+}
