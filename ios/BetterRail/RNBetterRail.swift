@@ -1,6 +1,7 @@
 import Foundation
 import Intents
 import WidgetKit
+import FirebaseCrashlytics
 
 /// A set of common functions to be called from the RN app
 @objc(RNBetterRail)
@@ -54,13 +55,24 @@ class RNBetterRail: NSObject {
   @objc func startActivity(_ routeJSON: String, resolver resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
     let decoder = JSONDecoder()
     
+
     do {
+      Crashlytics.crashlytics().log("NATIVE: DECODING \(routeJSON) . .")
       let route = try decoder.decode(Route.self, from: routeJSON.data(using: .utf8)!)
+      Crashlytics.crashlytics().log("NATIVE: DECODED \(route)")
       Task {
+        Crashlytics.crashlytics().log("NATIVE: STARTING ACTIVITY . . .")
         await LiveActivitiesController.shared.startLiveActivity(route: route)
+        Crashlytics.crashlytics().log("NATIVE: ACTIVITY STARTED !")
         
         // wait for the token to have it's ride Id assigned
+        Crashlytics.crashlytics().log("NATIVE: WAITING FOR TOKEN . . ")
+
         let newToken = await LiveActivitiesController.tokenRegistry.awaitNewTokenRegistration()
+        Crashlytics.crashlytics().log("NATIVE: TOKEN RECIEVED! token - \(newToken.token) rideId - \(newToken.rideId) ")
+
+        Crashlytics.crashlytics().log("NATIVE: BACK TO RN ! BYE BYE ! ")
+
         // report to React Native
         resolve(newToken.rideId)
       }

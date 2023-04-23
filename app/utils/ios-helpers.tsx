@@ -1,5 +1,6 @@
 import { NativeModules } from "react-native"
 import { RouteItem } from "../services/api"
+import crashlytics from "@react-native-firebase/crashlytics"
 
 const { RNBetterRail } = NativeModules
 
@@ -57,10 +58,17 @@ function prepareDataForLiveActivities(route: RouteItem) {
 
 export async function startLiveActivity(route: RouteItem) {
   try {
+    crashlytics().log(`Preparing data for ride..`)
+
     const modifiedRoute = prepareDataForLiveActivities(route)
+
+    crashlytics().log(`Data prepared! stringyfying..`)
+
     const routeJSON = JSON.stringify(modifiedRoute)
-    console.log(routeJSON)
+
+    crashlytics().log(`Requested ride with the following route: ${routeJSON}`)
     const rideId = await RNBetterRail.startActivity(routeJSON)
+    crashlytics().log(`Started ride with id: ${rideId}`)
     return rideId
   } catch (err) {
     console.log(err)
