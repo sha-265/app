@@ -162,7 +162,7 @@ func getMinutesLeft(targetDate: Date) -> Int {
 /// Used to test what's the inital station Id for the activity, especially for cases where
 /// the train has departured already.
 /// - Returns: The station Id
-func findClosestStationInRoute(route: Route) throws -> Int {
+func findClosestStationInRoute(route: Route) -> Int {
   let now = Date()
   
   // find the first station where the departure time is after the current time
@@ -184,7 +184,7 @@ func findClosestStationInRoute(route: Route) throws -> Int {
     }
   }
   
-  throw ActivityError.stationNotFound
+  return route.trains[0].orignStation
 }
 
 @available(iOS 16.1, *)
