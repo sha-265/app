@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "server"],
   "include": ["index.js", "app", "test", "storybook"],
   "extends": "expo/tsconfig.base"
 }
