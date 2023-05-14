@@ -4,7 +4,6 @@ import { RouteApi } from "../../services/api/route-api"
 import { format, add } from "date-fns"
 import { omit } from "ramda"
 import { RouteItem } from "../../services/api"
-import { formatDateForAPI } from "../../utils/helpers/date-helpers"
 
 export const trainStop = {
   arrivalTime: types.number,
@@ -64,7 +63,8 @@ export const trainRoutesModel = types
       // If no routes are found, try to fetch results for the upcoming 3 days.
       while (!foundRoutes && apiHitCount < 4) {
         // Format times for Israel Rail API
-        const [date, hour] = formatDateForAPI(requestDate)
+        const date = format(requestDate, "yyyy-MM-dd")
+        const hour = format(time, "HH:mm")
 
         const result = await routeApi.getRoutes(originId, destinationId, date, hour)
 

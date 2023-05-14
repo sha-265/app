@@ -11,14 +11,10 @@ const CLOSE_ICON_STYLE: ImageStyle = {
   opacity: 0.5,
 }
 
-interface CloseButtonProps extends ButtonProps {
-  iconStyle?: ImageStyle
-}
-
-function CloseButton({ onPress, iconStyle, ...props }: CloseButtonProps) {
+function CloseButton({ onPress, ...props }: ButtonProps) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8} accessibilityLabel="חזרה" {...props}>
-      <Image source={require("../../../assets/close.png")} style={[CLOSE_ICON_STYLE, iconStyle]} />
+      <Image source={require("../../../assets/close.png")} style={CLOSE_ICON_STYLE} />
     </TouchableOpacity>
   )
 }

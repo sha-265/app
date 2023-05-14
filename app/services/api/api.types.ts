@@ -5,10 +5,10 @@ type RailApiRouteItem = {
   arrivalTime: string
   freeSeats: number
   travelMessages: any[]
-  trains: ApiTrain[]
+  trains: Train[]
 }
 
-export interface ApiTrain {
+export interface Train {
   trainNumber: number
   orignStation: number
   destinationStation: number
@@ -45,31 +45,6 @@ export type RailApiGetRoutesResult = {
   }
 }
 
-export type Train = {
-  originStationId: number
-  originStationName: string
-  destinationStationId: number
-  destinationStationName: string
-  arrivalTime: number
-  arrivalTimeString: string
-  departureTime: number
-  departureTimeString: string
-  originPlatform: number
-  destinationPlatform: number
-  trainNumber: number
-  stopStations: {
-    arrivalTime: number
-    arrivalTimeString: string
-    departureTime: number
-    departureTimeString: string
-    stationId: number
-    stationName: string
-    platform: number
-  }[]
-  lastStop: string
-  delay: number
-}
-
 export type RouteItem = {
   delay: number
   isExchange: boolean
@@ -80,7 +55,30 @@ export type RouteItem = {
   arrivalTimeString: string
   isMuchLonger: boolean
   isMuchShorter: boolean
-  trains: Train[]
+  trains: {
+    originStationId: number
+    originStationName: string
+    destinationStationId: number
+    destinationStationName: string
+    arrivalTime: number
+    arrivalTimeString: string
+    departureTime: number
+    departureTimeString: string
+    originPlatform: number
+    destinationPlatform: number
+    trainNumber: number
+    stopStations: {
+      arrivalTime: number
+      arrivalTimeString: string
+      departureTime: number
+      departureTimeString: string
+      stationId: number
+      stationName: string
+      platform: number
+    }[]
+    lastStop: string
+    delay: number
+  }[]
 }
 
 export interface Title {

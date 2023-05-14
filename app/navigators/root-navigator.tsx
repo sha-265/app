@@ -4,14 +4,12 @@ import { NavigationContainer, NavigationContainerRef, DefaultTheme, DarkTheme } 
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { MainNavigator } from "./main-navigator"
 import { SettingsNavigator } from "./settings/settings-navigator"
-import { ActiveRideNavigator } from "./active-ride/active-ride-navigator"
 import { WidgetOnboardingNavigator } from "./widget-onboarding/widget-onboarding-navigator"
 
 export type RootParamList = {
   mainStack: undefined
   secondaryStack: undefined
   settingsStack: undefined
-  activeRideStack: undefined
   widgetOnboardingStack: undefined
 }
 
@@ -27,7 +25,6 @@ const RootStack = () => {
     >
       <Stack.Screen name="mainStack" component={MainNavigator} />
       <Stack.Screen name="settingsStack" component={SettingsNavigator} />
-      <Stack.Screen name="activeRideStack" component={ActiveRideNavigator} />
       <Stack.Screen name="widgetOnboardingStack" component={WidgetOnboardingNavigator} />
     </Stack.Navigator>
   )

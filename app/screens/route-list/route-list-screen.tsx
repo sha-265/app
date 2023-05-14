@@ -1,17 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { View, ActivityIndicator, ViewStyle } from "react-native"
-import { FlashList } from "@shopify/flash-list"
 import { observer } from "mobx-react-lite"
-import { useNetInfo } from "@react-native-community/netinfo"
-import { SharedElement } from "react-navigation-shared-element"
-import { useQuery } from "react-query"
-import { closestIndexTo } from "date-fns"
+import { View, ActivityIndicator, ViewStyle } from "react-native"
 import { RouteListScreenProps } from "../../navigators/main-navigator"
+import { Screen, RouteDetailsHeader, RouteCard, RouteCardHeight } from "../../components"
 import { useStores } from "../../models"
 import { color, spacing } from "../../theme"
+import { format, closestIndexTo } from "date-fns"
 import { RouteItem } from "../../services/api"
-import { Screen, RouteDetailsHeader, RouteCard, RouteCardHeight } from "../../components"
-import { RouteListModal, NoTrainsFoundMessage, NoInternetConnection } from "./components"
+import { RouteListModal } from "./components/route-list-modal"
+import { SharedElement } from "react-navigation-shared-element"
+import { useQuery } from "react-query"
+import { NoTrainsFoundMessage } from "./components/no-trains-found-msg"
+import { useNetInfo } from "@react-native-community/netinfo"
+import { NoInternetConnection } from "./components/no-internet-connection"
+import { useRideRerender } from "../../hooks/use-ride-rerender"
+import { FlashList } from "@shopify/flash-list"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -24,6 +27,10 @@ export const RouteListScreen = observer(function RouteListScreen({ navigation, r
   const { originId, destinationId, time, enableQuery } = route.params
 
   const { isInternetReachable } = useNetInfo()
+
+  // this is for the screen to re-render when the user navigates back from the route details screen
+  // and the user has started a ride - so the route card will be highlighted
+  useRideRerender(ride, navigation)
 
   const trains = useQuery(
     ["origin", originId, "destination", destinationId, "time", routePlan.date.getDate()],
@@ -86,6 +93,8 @@ export const RouteListScreen = observer(function RouteListScreen({ navigation, r
             routeItem: item,
             originId: route.params.originId,
             destinationId: route.params.destinationId,
+            date: format(route.params.time, "yyyyMMdd"),
+            time: format(route.params.time, "HHmm"),
           })
         }
         style={{ marginBottom: spacing[3] }}
@@ -122,8 +131,6 @@ export const RouteListScreen = observer(function RouteListScreen({ navigation, r
           contentContainerStyle={{ paddingTop: spacing[4], paddingHorizontal: spacing[3], paddingBottom: spacing[3] }}
           estimatedItemSize={RouteCardHeight + spacing[3]}
           initialScrollIndex={initialScrollIndex}
-          // so the list will re-render when the ride route changes, and so the item will be marked
-          extraData={ride.route}
         />
       )}
 
@@ -137,7 +144,7 @@ export const RouteListScreen = observer(function RouteListScreen({ navigation, r
         <RouteListModal
           isVisible={isModalVisible}
           onOk={() => setIsModalVisible(false)}
-          routesDate={trains.data[0].trains[0].departureTime}
+          routesDate={trainRoutes.routes[0]?.departureTime}
         />
       )}
     </Screen>
