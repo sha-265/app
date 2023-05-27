@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import { Screen, Text, CloseButton } from "../../components"
+import { Screen, Text, CloseButton, BottomSheetModal } from "../../components"
 import { color, spacing } from "../../theme"
 import { useLayoutEffect, useState } from "react"
 import { SubscriptionTypeBox, SubscriptionTypes } from "./"
@@ -11,6 +11,8 @@ import { isRTL, translate } from "../../i18n"
 import { BlurView } from "@react-native-community/blur"
 import Animated, {
   Extrapolate,
+  FadeInDown,
+  SlideInDown,
   interpolate,
   useAnimatedScrollHandler,
   useAnimatedStyle,
@@ -125,6 +127,10 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
       </Animated.ScrollView>
 
       <SubscribeButtonSheet subscriptionType={subscriptionType} />
+
+      <Animated.View entering={SlideInDown.delay(1000)}>
+        <BottomSheetModal />
+      </Animated.View>
     </Screen>
   )
 }
