@@ -19,6 +19,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated"
 import { Header, HeaderBackButton, useHeaderHeight } from "@react-navigation/elements"
+import { BetterRailLiveSheet } from "./feature-sheets/better-rail-live-sheet"
 
 // #region styles
 const HEAD_WRAPPER: ViewStyle = {
@@ -128,9 +129,7 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
 
       <SubscribeButtonSheet subscriptionType={subscriptionType} />
 
-      <Animated.View entering={SlideInDown.delay(1000)}>
-        <BottomSheetModal />
-      </Animated.View>
+      <BetterRailLiveSheet />
     </Screen>
   )
 }
