@@ -36,7 +36,11 @@ const colors = {
   },
 }
 
-export function FeaturesBox() {
+interface FeatureBoxProps {
+  onFeaturePress?: (featureName: string) => void
+}
+
+export function FeaturesBox({ onFeaturePress }: FeatureBoxProps) {
   return (
     <List>
       <FeatureBox
@@ -45,6 +49,7 @@ export function FeaturesBox() {
         icon={LiveActivityIcon}
         bgColor={colors.orange.background}
         iconColor={colors.orange.foreground}
+        onPress={() => onFeaturePress("liveActivity")}
       />
       <FeatureBox
         title={translate("paywall.widgets")}
@@ -78,14 +83,14 @@ export function FeaturesBox() {
   )
 }
 
-const FeatureBox = ({ title, subtitle, icon, bgColor, iconColor, ...rest }) => (
+const FeatureBox = ({ title, subtitle, icon, bgColor, iconColor, onPress, ...rest }) => (
   <ListItem
     title={title}
     subtitle={subtitle}
     contentStyle={{ width: isLargeScreen ? 230 : 220 }}
     startBoxItem={<FeatureBoxIcon icon={icon} backgroundColor={bgColor} tintColor={iconColor} />}
     endBoxItem={<Image source={ChevronIcon} style={[CHEVRON_ICON, { marginStart: 0, marginEnd: 0 }]} />}
-    onPress={() => {}}
+    onPress={onPress}
     {...rest}
   />
 )

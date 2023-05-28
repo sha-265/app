@@ -1,7 +1,7 @@
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import { Screen, Text, CloseButton, BottomSheetModal } from "../../components"
 import { color, spacing } from "../../theme"
-import { useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { SubscriptionTypeBox, SubscriptionTypes } from "./"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { PaywallScreenProps } from "../../navigators/paywall/paywall-navigator"
@@ -11,15 +11,14 @@ import { isRTL, translate } from "../../i18n"
 import { BlurView } from "@react-native-community/blur"
 import Animated, {
   Extrapolate,
-  FadeInDown,
-  SlideInDown,
   interpolate,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated"
 import { Header, HeaderBackButton, useHeaderHeight } from "@react-navigation/elements"
-import { BetterRailLiveSheet } from "./feature-sheets/better-rail-live-sheet"
+import { LiveFeatureSheet } from "./feature-sheets/live-feature-sheet"
+import BottomSheet from "@gorhom/bottom-sheet"
 
 // #region styles
 const HEAD_WRAPPER: ViewStyle = {
@@ -50,6 +49,7 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
   const insets = useSafeAreaInsets()
   const scrollPosition = useSharedValue(0)
   const headerHeight = useHeaderHeight()
+  const bottomSheetRef = useRef<BottomSheet>(null)
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     scrollPosition.value = event.contentOffset.y
@@ -98,6 +98,10 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
     })
   }, [])
 
+  const openFeatureSheet = () => {
+    bottomSheetRef.current?.expand()
+  }
+
   return (
     <Screen style={{ flex: 1, backgroundColor: color.background }}>
       <Animated.ScrollView
@@ -113,7 +117,7 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
         </View>
 
         <View style={{ gap: 18 }}>
-          <FeaturesBox />
+          <FeaturesBox onFeaturePress={openFeatureSheet} />
 
           <View>
             <Text
@@ -129,7 +133,13 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
 
       <SubscribeButtonSheet subscriptionType={subscriptionType} />
 
-      <BetterRailLiveSheet />
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        backgroundStyle={{ backgroundColor: color.secondaryBackground }}
+        style={{ paddingVertical: spacing[4], paddingHorizontal: spacing[4] }}
+      >
+        <LiveFeatureSheet />
+      </BottomSheetModal>
     </Screen>
   )
 }

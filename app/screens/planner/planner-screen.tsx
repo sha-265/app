@@ -177,10 +177,6 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
     })
   }
 
-  useEffect(() => {
-    navigation.navigate("paywallStack", { screen: "paywall" })
-  }, [])
-
   /**
    * When the app is in the background it may remain active in memory.
    * Therefor, `routePlan.date` might be irrelevant when opening the app after a period of time.
@@ -310,7 +306,8 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
 
         <Button
           title={translate("plan.find")}
-          onPress={onGetRoutePress}
+          // onPress={onGetRoutePress}
+          onPress={() => navigation.navigate("paywallStack", { screen: "paywall", params: { presentation: "modal" } })}
           disabled={!routePlan.origin || !routePlan.destination || routePlan.origin.id === routePlan.destination.id}
         />
       </View>

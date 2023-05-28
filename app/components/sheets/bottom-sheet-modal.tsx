@@ -1,40 +1,28 @@
-import { useCallback, useMemo, useRef } from "react"
+import { forwardRef, useCallback, useMemo } from "react"
 import { ViewStyle } from "react-native"
-import { color, spacing } from "../../theme"
-import BottomSheet from "@gorhom/bottom-sheet"
+import BottomSheet, { BottomSheetBackdrop, BottomSheetProps } from "@gorhom/bottom-sheet"
 
-const SHEET_MODAL: ViewStyle = {
-  width: "100%",
-  height: 500,
-  padding: spacing[5],
-  backgroundColor: color.secondaryBackground,
-  borderTopLeftRadius: 16,
-  borderTopRightRadius: 16,
-  zIndex: 200,
-  flex: 1,
+interface BottomSheetModalProps extends BottomSheetProps {
+  children: React.ReactNode
+  style: ViewStyle
 }
 
-export function BottomSheetModal({ children }) {
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null)
+export const BottomSheetModal = forwardRef<BottomSheet, BottomSheetModalProps>(({ children, ...rest }, ref) => {
+  const snapPoints = useMemo(() => ["55%"], [])
 
-  // variables
-  const snapPoints = useMemo(() => ["50%"], [])
+  const renderBackdrop = useCallback((props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={2} />, [])
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index)
-  }, [])
   return (
     <BottomSheet
-      ref={bottomSheetRef}
-      index={0}
+      ref={ref}
+      index={-1}
       enablePanDownToClose
       snapPoints={snapPoints}
-      onChange={handleSheetChanges}
-      style={SHEET_MODAL}
+      backdropComponent={renderBackdrop}
+      handleComponent={null}
+      {...rest}
     >
       {children}
     </BottomSheet>
   )
-}
+})
