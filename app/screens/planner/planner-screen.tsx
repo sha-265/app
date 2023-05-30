@@ -306,7 +306,9 @@ export const PlannerScreen = observer(function PlannerScreen({ navigation }: Pla
 
         <Button
           title={translate("plan.find")}
-          onPress={onGetRoutePress}
+          // onPress={onGetRoutePress}
+
+          onPress={() => navigation.navigate("paywallStack", { screen: "paywall", params: { presentation: "modal" } })}
           disabled={!routePlan.origin || !routePlan.destination || routePlan.origin.id === routePlan.destination.id}
         />
       </View>

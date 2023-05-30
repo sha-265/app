@@ -2,6 +2,8 @@ import { Dimensions, DynamicColorIOS, Image, ImageStyle, PlatformColor, View, Vi
 import { List, ListItem } from "../../components"
 import { CHEVRON_ICON } from "../settings"
 import { translate } from "../../i18n"
+import { PaywallScreenProps } from "../../navigators/paywall/paywall-navigator"
+import { useNavigation } from "@react-navigation/native"
 
 const deviceWidth = Dimensions.get("screen").width
 const isLargeScreen = deviceWidth > 375
@@ -37,6 +39,8 @@ const colors = {
 }
 
 export function FeaturesBox() {
+  const navigation = useNavigation<PaywallScreenProps["navigation"]>()
+
   return (
     <List>
       <FeatureBox
@@ -73,19 +77,20 @@ export function FeaturesBox() {
         icon={HumansIcon}
         bgColor={colors.purple.background}
         iconColor={colors.purple.foreground}
+        onPress={() => navigation.navigate("supportUs")}
       />
     </List>
   )
 }
 
-const FeatureBox = ({ title, subtitle, icon, bgColor, iconColor, ...rest }) => (
+const FeatureBox = ({ title, subtitle, icon, bgColor, iconColor, onPress, ...rest }) => (
   <ListItem
     title={title}
     subtitle={subtitle}
     contentStyle={{ width: isLargeScreen ? 230 : 220 }}
     startBoxItem={<FeatureBoxIcon icon={icon} backgroundColor={bgColor} tintColor={iconColor} />}
     endBoxItem={<Image source={ChevronIcon} style={[CHEVRON_ICON, { marginStart: 0, marginEnd: 0 }]} />}
-    onPress={() => {}}
+    onPress={onPress}
     {...rest}
   />
 )

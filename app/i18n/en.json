@@ -182,6 +182,14 @@
     "supportProjectDetail": "Directly support our ability to keep adding fun new features.",
     "startFreeTrial": "Start 14 days free trial",
     "afterTrialPrice": "then %{price} / %{period}",
-    "cancelAnytime": "Cancel anytime"
+    "cancelAnytime": "Cancel anytime",
+    "features": {
+      "supportUs": {
+        "supportUsTitle": "Hey! We’re Guy & Matan",
+        "supportUsP1": "We’re two train passengers that wanted to build the best app for Israel Railways.        ",
+        "supportUsP2": "We work on Better Rail in our spare time, and pay for it with our own money.",
+        "supportUsP3": "Joining Better Rail Pro allows us to pay for the services we use, and also to continue add cool new features to the app."
+      }
+    }
   }
 }

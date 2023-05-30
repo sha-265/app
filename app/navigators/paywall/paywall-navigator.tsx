@@ -6,6 +6,8 @@ import {
   StackScreenProps,
 } from "@react-navigation/stack"
 import { PaywallScreen } from "../../screens/paywall"
+import { PaywallSupportUsScreen } from "../../screens/paywall/feature-screens/paywall-support-us"
+import { translate } from "../../i18n"
 
 export type PaywallParamList = {
   paywall: {
@@ -15,6 +17,7 @@ export type PaywallParamList = {
      */
     presentation: "modal" | "push"
   }
+  supportUs: undefined
 }
 
 const PaywallStack = createStackNavigator<PaywallParamList>()
@@ -26,9 +29,18 @@ export const PaywallNavigator = () => (
     <PaywallStack.Screen
       name="paywall"
       component={PaywallScreen}
-      options={({ navigation }) => ({
+      options={() => ({
         headerTransparent: true,
+        headerBackTitleVisible: false,
       })}
+    />
+    <PaywallStack.Screen
+      name="supportUs"
+      component={PaywallSupportUsScreen}
+      options={{
+        title: translate("paywall.supportProject"),
+        headerBackTitleVisible: false,
+      }}
     />
   </PaywallStack.Navigator>
 )
