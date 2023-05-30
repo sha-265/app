@@ -10,6 +10,8 @@ import { PRESSABLE_BASE, Text } from "../../components"
 import { translate } from "../../i18n"
 import { useFontFamily } from "../../hooks/use-font-family"
 import { usePaywallStore } from "./use-paywall-store"
+import { useStores } from "../../models"
+import * as Burnt from "burnt"
 
 const BOTTOM_FLOATING_VIEW: ViewStyle = {
   position: "absolute",
@@ -21,12 +23,29 @@ const BOTTOM_FLOATING_VIEW: ViewStyle = {
   borderTopColor: color.separator,
 }
 
-export function SubscribeButtonSheet({ onPress }) {
+export function SubscribeButtonSheet() {
+  const { purchases } = useStores()
   const insets = useSafeAreaInsets()
   const isDarkMode = useIsDarkMode()
-  const [subscriptionType, purchaseInProgres] = usePaywallStore((state) => [state.subscriptionType, state.purchaseInProgres])
+  const [subscriptionType, purchaseInProgres, setPurchaseInProgress] = usePaywallStore((state) => [
+    state.subscriptionType,
+    state.purchaseInProgres,
+    state.setPurchaseInProgress,
+  ])
 
   const { fontFamily, isHeebo } = useFontFamily()
+
+  const onPurchase = async () => {
+    try {
+      setPurchaseInProgress(true)
+      await purchases.purchaseOffering(subscriptionType)
+    } catch (error) {
+      // TODO: Add crashlytics report here
+      Burnt.alert({ title: "Something went wrong", preset: "error" })
+    } finally {
+      setPurchaseInProgress(false)
+    }
+  }
 
   return (
     <View style={[BOTTOM_FLOATING_VIEW, { height: 97.5 + insets.bottom }]}>
@@ -51,7 +70,7 @@ export function SubscribeButtonSheet({ onPress }) {
             )}
           </>
         }
-        onPress={onPress}
+        onPress={onPurchase}
         isLoading={purchaseInProgres}
         titleStyle={{ fontFamily, color: color.whiteText }}
         contentStyle={{ gap: isHeebo ? 1 : 6 }}

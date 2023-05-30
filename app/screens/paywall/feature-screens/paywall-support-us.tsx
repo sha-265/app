@@ -2,6 +2,7 @@ import { Image, ImageStyle, ScrollView, TextStyle, View, ViewStyle } from "react
 import { Screen, Text } from "../../../components"
 import { color, spacing } from "../../../theme"
 import { SubscribeButtonSheet } from "../subscribe-button-sheet"
+import { SharedElement } from "react-navigation-shared-element"
 
 const matanProfile = require("../../../../assets/paywall/support-us/matan.jpg")
 const guyProfile = require("../../../../assets/paywall/support-us/guy.jpg")
@@ -40,7 +41,7 @@ export function PaywallSupportUsScreen() {
         <Text tx="paywall.features.supportUs.supportUsP3" style={CONTENT} />
       </ScrollView>
 
-      <SubscribeButtonSheet subscriptionType={"annual"} onPress={() => {}} isLoading={false} />
+      <SubscribeButtonSheet onPress={() => {}} />
     </Screen>
   )
 }
