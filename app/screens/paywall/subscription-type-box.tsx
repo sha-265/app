@@ -4,8 +4,7 @@ import { color } from "../../theme"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { useIsDarkMode } from "../../hooks/use-is-dark-mode"
 import { translate } from "../../i18n"
-
-export type SubscriptionTypes = "annual" | "monthly"
+import { SubscriptionTypes } from "./use-paywall-store"
 
 const ANNUAL_ITEM_TITLE_WRAPPER: ViewStyle = {
   flexDirection: "row",

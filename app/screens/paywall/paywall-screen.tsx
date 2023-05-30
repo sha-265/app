@@ -1,11 +1,11 @@
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import { Screen, Text, CloseButton } from "../../components"
 import { color, spacing } from "../../theme"
-import { useLayoutEffect, useState } from "react"
-import { SubscriptionTypeBox, SubscriptionTypes } from "./"
+import { useLayoutEffect } from "react"
+import { SubscriptionTypeBox } from "./"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { PaywallScreenProps } from "../../navigators/paywall/paywall-navigator"
-import { SubscribeButtonSheet } from "./subscribe-button-sheet"
+import { SubscribeButtonSheet, usePaywallStore } from "./"
 import { FeaturesBox } from "./paywall-features-box"
 import { isRTL, translate } from "../../i18n"
 import { BlurView } from "@react-native-community/blur"
@@ -46,8 +46,8 @@ const BETTER_RAIL_PRO_SUBTITLE: TextStyle = {
 
 export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
   const { purchases } = useStores()
-  const [subscriptionType, setSubscriptionType] = useState<SubscriptionTypes>("annual")
-  const [purchaseInProgres, setPurchaseInProgress] = useState(false)
+  const [subscriptionType, setSubscriptionType] = usePaywallStore((state) => [state.subscriptionType, state.setSubscriptionType])
+  const setPurchaseInProgress = usePaywallStore((state) => state.setPurchaseInProgress)
 
   const insets = useSafeAreaInsets()
   const scrollPosition = useSharedValue(0)
@@ -141,7 +141,7 @@ export function PaywallScreen({ navigation, route }: PaywallScreenProps) {
         </View>
       </Animated.ScrollView>
 
-      <SubscribeButtonSheet subscriptionType={subscriptionType} onPress={onPurchase} isLoading={purchaseInProgres} />
+      <SubscribeButtonSheet onPress={onPurchase} />
     </Screen>
   )
 }

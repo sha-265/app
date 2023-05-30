@@ -1,6 +1,5 @@
 import { BlurView } from "@react-native-community/blur"
-import React, { useEffect, useState } from "react"
-import { ActivityIndicator, Platform, TextStyle, View, ViewStyle } from "react-native"
+import { ActivityIndicator, TextStyle, View, ViewStyle } from "react-native"
 import Animated, { FadeIn } from "react-native-reanimated"
 import { color } from "../../theme"
 import { useIsDarkMode } from "../../hooks/use-is-dark-mode"
@@ -8,9 +7,9 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import { PRESSABLE_BASE, Text } from "../../components"
-import { SubscriptionTypes } from "./"
-import { translate, userLocale } from "../../i18n"
+import { translate } from "../../i18n"
 import { useFontFamily } from "../../hooks/use-font-family"
+import { usePaywallStore } from "./use-paywall-store"
 
 const BOTTOM_FLOATING_VIEW: ViewStyle = {
   position: "absolute",
@@ -22,15 +21,10 @@ const BOTTOM_FLOATING_VIEW: ViewStyle = {
   borderTopColor: color.separator,
 }
 
-interface SubscribeButtonSheetProps {
-  subscriptionType: SubscriptionTypes
-  onPress: () => void
-  isLoading: boolean
-}
-
-export function SubscribeButtonSheet({ subscriptionType, onPress, isLoading }: SubscribeButtonSheetProps) {
+export function SubscribeButtonSheet({ onPress }) {
   const insets = useSafeAreaInsets()
   const isDarkMode = useIsDarkMode()
+  const [subscriptionType, purchaseInProgres] = usePaywallStore((state) => [state.subscriptionType, state.purchaseInProgres])
 
   const { fontFamily, isHeebo } = useFontFamily()
 
@@ -58,7 +52,7 @@ export function SubscribeButtonSheet({ subscriptionType, onPress, isLoading }: S
           </>
         }
         onPress={onPress}
-        isLoading={isLoading}
+        isLoading={purchaseInProgres}
         titleStyle={{ fontFamily, color: color.whiteText }}
         contentStyle={{ gap: isHeebo ? 1 : 6 }}
         colors={isDarkMode ? ["#5E17EB", "#9432C2"] : ["#7B1AEC", "#5755F2"]}
