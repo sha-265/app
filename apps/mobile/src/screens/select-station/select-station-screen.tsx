@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { View, Pressable, Platform, Alert, Image } from "react-native"
+import { View, Pressable, Platform, Alert, Image, KeyboardAvoidingView } from "react-native"
 import { StyleSheet } from "react-native-unistyles"
 import { Screen, Text, StationCard, FavoriteRoutes } from "@/components"
 import type { StationCardBadge } from "@/components/station-card/station-card"
@@ -144,46 +144,51 @@ export function SelectStationScreen() {
       unsafe={true}
       statusBarBackgroundColor={isDarkMode ? "#1c1c1e" : "#f2f2f7"}
     >
-      <View style={styles.searchBarWrapper}>
-        {!allowedStations && (
-          <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} autoFocus={favoriteRoutesData.length < 2} />
-        )}
-        <Pressable testID="cancel-station-selection" onPress={() => router.back()}>
-          <Text style={styles.cancelLink} tx="common.cancel" />
-        </Pressable>
-        {hasTrainStart && (
-          <Pressable
-            testID="train-start-info-button"
-            style={styles.infoButton}
-            onPress={showTrainStartInfo}
-            hitSlop={12}
-            accessibilityRole="button"
-            accessibilityLabel={translate("routeDetails.trainStartsHereInfoTitle") ?? ""}
-          >
-            <Image source={INFO_ICON} style={styles.infoIcon} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <View style={styles.searchBarWrapper}>
+          {!allowedStations && (
+            <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} autoFocus={favoriteRoutesData.length < 2} />
+          )}
+          <Pressable testID="cancel-station-selection" onPress={() => router.back()}>
+            <Text style={styles.cancelLink} tx="common.cancel" />
           </Pressable>
-        )}
-      </View>
+          {hasTrainStart && (
+            <Pressable
+              testID="train-start-info-button"
+              style={styles.infoButton}
+              onPress={showTrainStartInfo}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel={translate("routeDetails.trainStartsHereInfoTitle") ?? ""}
+            >
+              <Image source={INFO_ICON} style={styles.infoIcon} />
+            </Pressable>
+          )}
+        </View>
 
-      <FlashList
-        ref={listRef}
-        data={listData}
-        renderItem={({ item }) => renderItem(item)}
-        keyExtractor={(item) => item.id}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={styles.listContent}
-        extraData={replacingStationId}
-        // Disabled: otherwise FlashList may scroll the list out of view when results change between keystrokes.
-        maintainVisibleContentPosition={{ disabled: true }}
-        ListEmptyComponent={() =>
-          allowedStations ? null : (
-            <View>
-              <RecentSearchesBox selectionType={selectionType} />
-              {recentSearchEntries.length > 1 && <FavoriteRoutes />}
-            </View>
-          )
-        }
-      />
+        <FlashList
+          ref={listRef}
+          data={listData}
+          renderItem={({ item }) => renderItem(item)}
+          keyExtractor={(item) => item.id}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={styles.listContent}
+          extraData={replacingStationId}
+          // Disabled: otherwise FlashList may scroll the list out of view when results change between keystrokes.
+          maintainVisibleContentPosition={{ disabled: true }}
+          ListEmptyComponent={() =>
+            allowedStations ? null : (
+              <View>
+                <RecentSearchesBox selectionType={selectionType} />
+                {recentSearchEntries.length > 1 && <FavoriteRoutes />}
+              </View>
+            )
+          }
+        />
+      </KeyboardAvoidingView>
     </Screen>
   )
 }
@@ -191,6 +196,9 @@ export function SelectStationScreen() {
 const styles = StyleSheet.create((theme, rt) => ({
   root: {
     backgroundColor: theme.colors.secondaryBackground,
+    flex: 1,
+  },
+  keyboardAvoidingView: {
     flex: 1,
   },
   listContent: {
